@@ -19,7 +19,7 @@
 .aj-ar{font-family:'Tajawal',sans-serif;}
 
 /* breadcrumb */
-.aj-crumb{padding:14px 0 10px;font-size:12.5px;color:var(--aj-muted);}
+.aj-crumb{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;padding:14px 0 10px;font-size:12.5px;color:var(--aj-muted);}
 .aj-crumb a{color:var(--aj-accent);text-decoration:none;font-weight:500;}
 
 /* ── hero ── */
