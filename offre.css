@@ -1,0 +1,152 @@
+/* ════════════════════════════════════════════════════════════
+   ASWAQ JOMLA — offre.css  (v1.0.0)
+   Page offre redesign — design Tirma + données 2026
+   Repo : Aswaqjomla/aswaqjomla-assets
+   Charger via :
+   https://cdn.jsdelivr.net/gh/Aswaqjomla/aswaqjomla-assets@v1.0.0/offre.css
+   (utiliser un tag versionné, pas @main — cache jsDelivr)
+   Convention : tout est préfixé aj- et scopé sous .aj-offre-page
+   ════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=Tajawal:wght@400;500;700&display=swap');
+
+.aj-offre-page{
+  --ink:#161310; --surface:#f7f4ef; --card:#ffffff;
+  --accent:#c8522a; --accent-deep:#8f3517;
+  --brass:#a87420; --brass-soft:#f4ead2;
+  --border:#e6dfd6; --muted:#8a8078;
+  --radius:16px; --shadow:0 2px 18px rgba(60,40,20,.08);
+  font-family:'Inter',sans-serif;
+  background:var(--surface);
+  color:var(--ink);
+  line-height:1.55;
+  padding-bottom:92px; /* espace barre sticky */
+}
+.aj-offre-page *,.aj-offre-page *::before,.aj-offre-page *::after{box-sizing:border-box;}
+.aj-ar{font-family:'Tajawal',sans-serif;}
+
+.aj-wrap{max-width:960px;margin:0 auto;padding:0 18px;}
+
+/* ── Fil d'ariane ── */
+.aj-crumb{padding:14px 0 10px;font-size:12.5px;color:var(--muted);}
+.aj-crumb a{color:var(--accent);text-decoration:none;font-weight:500;}
+.aj-crumb span{margin:0 6px;color:#c9c1b8;}
+
+/* ── Layout haut : galerie + résumé ── */
+.aj-top{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;}
+@media(max-width:760px){.aj-top{grid-template-columns:1fr;}}
+
+/* ── Galerie ── */
+.aj-gal{display:flex;flex-direction:column;gap:10px;}
+.aj-gal-main{position:relative;aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;
+  background:#efe5d6;box-shadow:var(--shadow);}
+.aj-gal-main img{width:100%;height:100%;object-fit:cover;display:block;}
+.aj-gal-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.aj-gal-thumb{aspect-ratio:1;border-radius:12px;overflow:hidden;background:#efe5d6;
+  border:2px solid transparent;cursor:pointer;}
+.aj-gal-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.aj-gal-thumb.active{border-color:var(--accent);}
+.aj-gal-thumb.aj-empty{display:none;} /* masquer les vignettes sans image */
+
+/* ── Résumé ── */
+.aj-sum{display:flex;flex-direction:column;gap:14px;}
+.aj-sum h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4.5vw,34px);
+  font-weight:800;line-height:1.1;margin:0;}
+
+/* Bandeau combiné : offre validée + vendeur vérifié */
+.aj-verified{display:flex;align-items:center;gap:10px;background:#e8f5ee;border:1px solid #bfe3cd;
+  border-radius:12px;padding:10px 14px;width:fit-content;max-width:100%;}
+.aj-verified .ico{width:26px;height:26px;border-radius:50%;background:#1d7a45;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:700;}
+.aj-verified b{font-size:13px;color:#1d7a45;display:block;}
+.aj-verified small{font-size:11.5px;color:#3f7a58;display:block;}
+
+/* Chips (type-commerce / type-vente / état / type-offre) */
+.aj-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.aj-chip{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:7px 14px;
+  font-size:12.5px;font-weight:600;color:#5c544b;}
+.aj-chip b{color:var(--ink);font-weight:700;}
+
+/* Plaque prix + Quantité_minimum */
+.aj-plaque{display:flex;align-items:stretch;border-radius:14px;overflow:hidden;
+  box-shadow:var(--shadow);border:1px solid #e2d2ab;}
+.aj-plaque-prix{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  color:#fff;padding:14px 18px;}
+.aj-plaque-prix-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.8;}
+.aj-plaque-prix-val{font-family:'Syne',sans-serif;font-size:clamp(24px,5vw,30px);font-weight:800;line-height:1.1;}
+.aj-plaque-prix-val small{font-size:.48em;font-weight:700;opacity:.9;margin-left:4px;}
+.aj-plaque-moq{flex:0 0 auto;background:var(--brass-soft);color:#6e4d0e;padding:14px 18px;
+  display:flex;flex-direction:column;justify-content:center;text-align:center;}
+.aj-plaque-moq b{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--brass);}
+.aj-plaque-moq span{font-size:10.5px;font-weight:600;}
+.aj-plaque-moq .aj-ar{font-size:11px;opacity:.85;}
+
+/* Carte vendeur */
+.aj-seller{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);text-decoration:none;color:inherit;
+  transition:border-color .15s;}
+.aj-seller:hover{border-color:var(--accent);}
+.aj-seller-pic{width:46px;height:46px;border-radius:50%;background:#e5d9c4;flex-shrink:0;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:10px;color:#b3a68f;}
+.aj-seller-pic img{width:100%;height:100%;object-fit:cover;display:block;}
+.aj-seller-name{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;}
+.aj-seller-meta{font-size:12px;color:var(--muted);}
+.aj-seller-go{margin-left:auto;color:var(--accent);font-weight:700;font-size:13px;white-space:nowrap;}
+
+/* Têtes de section bilingues */
+.aj-sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:30px 0 12px;}
+.aj-sec-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;}
+.aj-sec-title-ar{font-family:'Tajawal',sans-serif;font-size:15px;font-weight:500;color:var(--muted);direction:rtl;}
+
+/* Description (dir=auto : FR ou Darija) */
+.aj-desc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px 20px;box-shadow:var(--shadow);}
+.aj-desc p{font-family:'Tajawal','Inter',sans-serif;font-size:16px;line-height:1.9;color:#3d362f;margin:0;}
+.aj-desc p[dir="rtl"],.aj-desc p:dir(rtl){text-align:right;}
+
+/* Vidéo (conditionnel — champ futur post-étape IA) */
+.aj-video{position:relative;aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;background:#241f19;
+  display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);}
+.aj-video mux-player,.aj-video video,.aj-video iframe{position:absolute;inset:0;width:100%;height:100%;}
+.aj-video-play{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.aj-video-note{position:absolute;bottom:12px;left:14px;color:#fff;font-size:12px;opacity:.85;}
+
+/* Variantes : couleurs / tailles */
+.aj-vars{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:640px){.aj-vars{grid-template-columns:1fr;}}
+.aj-var-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:15px 16px;box-shadow:var(--shadow);}
+.aj-var-title{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline;}
+.aj-var-title .aj-ar{font-size:12.5px;text-transform:none;letter-spacing:0;}
+.aj-var-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.aj-var-chip{background:var(--surface);border:1px solid var(--border);border-radius:100px;
+  padding:6px 13px;font-size:12.5px;font-weight:600;color:#5c544b;display:inline-flex;align-items:center;gap:7px;}
+.aj-dot{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:inline-block;}
+
+/* Dimensions & poids */
+.aj-dims-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:12px;}
+.aj-dims-svg{width:100%;max-width:340px;height:auto;}
+.aj-poids{background:var(--brass-soft);border:1px solid #e2d2ab;border-radius:100px;
+  padding:8px 16px;font-size:13px;font-weight:600;color:#6e4d0e;}
+.aj-poids b{color:var(--brass);}
+
+/* Footer */
+.aj-offre-footer{margin-top:44px;padding:22px 0 8px;text-align:center;font-size:12px;color:var(--muted);}
+
+/* Barre d'action sticky — Commander uniquement */
+.aj-actionbar{position:fixed;inset:auto 0 0 0;background:rgba(255,255,255,.92);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-top:1px solid var(--border);
+  padding:12px 18px calc(12px + env(safe-area-inset-bottom));z-index:50;}
+.aj-actionbar-in{max-width:960px;margin:0 auto;display:flex;gap:10px;}
+.aj-btn{display:flex;align-items:center;justify-content:center;gap:9px;border-radius:14px;
+  padding:15px 18px;font-family:'Syne',sans-serif;font-size:15.5px;font-weight:700;
+  text-decoration:none;transition:transform .12s;cursor:pointer;border:none;}
+.aj-btn:active{transform:scale(.98);}
+.aj-btn-order{flex:1;background:var(--accent);color:#fff;box-shadow:0 4px 18px rgba(200,82,42,.3);}
+.aj-btn-order:hover{background:var(--accent-deep);}
+.aj-btn .aj-ar{font-family:'Tajawal',sans-serif;font-weight:500;font-size:13px;opacity:.9;}
+
+@media (prefers-reduced-motion:reduce){.aj-offre-page *{transition:none!important;}}
