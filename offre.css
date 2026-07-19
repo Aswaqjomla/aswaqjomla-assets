@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════
    ASWAQ JOMLA — offre.css  (v1.0.0)
-   Page offre redesign — design Tirma + données 2026
+   Page offre redesign — design offers + données 2026
    Repo : Aswaqjomla/aswaqjomla-assets
    Charger via :
    https://cdn.jsdelivr.net/gh/Aswaqjomla/aswaqjomla-assets@v1.0.0/offre.css
@@ -149,4 +149,80 @@
 .aj-btn-order:hover{background:var(--accent-deep);}
 .aj-btn .aj-ar{font-family:'Tajawal',sans-serif;font-weight:500;font-size:13px;opacity:.9;}
 
-@media (prefers-reduced-motion:reduce){.aj-offre-page *{transition:none!important;}}
+@media (prefers-reduced-motion:reduce){.aj-offre-page *{transition:none!important;animation:none!important;}}
+
+/* ════════════════════════════════════════════════════════════
+   v1.0.1 — retours design (breadcrumb, badge, vidéo galerie,
+   MOQ, reveal on scroll, sticky rotator)
+   ════════════════════════════════════════════════════════════ */
+
+/* [N1] Breadcrumb : forcer l'affichage en ligne (les Text Blocks Webflow sont block) */
+.aj-crumb a,.aj-crumb span,.aj-crumb div,.aj-crumb p{display:inline;margin:0;}
+
+/* [N3] Badge "Offre validée" en overlay haut-droite de l'image principale */
+.aj-gal-badge{position:absolute;top:12px;right:12px;z-index:6;
+  background:#e8f5ee;border:1px solid #bfe3cd;color:#1d7a45;
+  border-radius:100px;padding:6px 12px;font-size:11.5px;font-weight:700;
+  display:inline-flex;align-items:center;gap:5px;
+  box-shadow:0 2px 10px rgba(20,60,35,.18);}
+/* bandeau restant dans le résumé (présence physique) — version compacte */
+.aj-verified{padding:8px 12px;}
+
+/* [N2] Vidéo dans la galerie */
+.aj-gal-video{position:absolute;inset:0;z-index:2;background:#241f19;display:none;}
+.aj-gal-video.is-active{display:block;}
+.aj-gal-video mux-player,.aj-gal-video video,.aj-gal-video iframe{width:100%;height:100%;object-fit:cover;}
+.aj-gal-main img.is-hidden{visibility:hidden;}
+.aj-gal-thumb--video{position:relative;background:#241f19;}
+.aj-gal-thumb--video::after{content:"▶";position:absolute;inset:0;display:flex;
+  align-items:center;justify-content:center;color:#fff;
+  background:rgba(20,15,10,.35);font-size:20px;border-radius:10px;pointer-events:none;}
+/* 4 vignettes quand la vidéo existe */
+.aj-gal-thumbs.has-video{grid-template-columns:repeat(4,1fr);}
+
+/* [N5] MOQ de la plaque — classes explicites (indépendantes des balises Webflow) */
+.aj-plaque-moq-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;
+  color:var(--brass);display:block;line-height:1.1;margin:0;}
+.aj-plaque-moq-label{font-size:10.5px;font-weight:600;display:block;margin:0;}
+/* [N5b] anti-troncature du panneau MOQ (texte "min. commande" coupé sur mobile) */
+.aj-plaque-prix{min-width:0;}
+.aj-plaque-moq{flex:0 1 auto;min-width:96px;max-width:46%;padding:12px;}
+.aj-plaque-moq span,.aj-plaque-moq .aj-plaque-moq-label{white-space:normal;line-height:1.25;}
+
+/* [N6] Carte vendeur — meta sur sa propre ligne */
+.aj-seller-meta{display:block;margin-top:2px;}
+.aj-seller-meta > *{display:inline;}
+
+/* [N9] Pill poids : forcer les blocs Webflow en ligne (ils s'empilaient sur 3 lignes) */
+.aj-poids{display:inline-flex;align-items:baseline;gap:5px;flex-wrap:wrap;justify-content:center;}
+.aj-poids > *,.aj-poids p,.aj-poids div,.aj-poids span{display:inline;margin:0;}
+.aj-poids-val{color:var(--brass);font-weight:800;}
+
+/* [N4+N7] Reveal on scroll (appliqué automatiquement par le script) */
+.aj-reveal{opacity:0;transform:translateY(20px);
+  transition:opacity .6s cubic-bezier(.22,.61,.36,1),transform .6s cubic-bezier(.22,.61,.36,1);
+  transition-delay:var(--aj-delay,0s);}
+.aj-reveal.is-in{opacity:1;transform:none;}
+/* les chips apparaissent une par une */
+.aj-chips.is-in .aj-chip{animation:aj-chip-pop .45s cubic-bezier(.22,.61,.36,1) both;}
+.aj-chips.is-in .aj-chip:nth-child(1){animation-delay:.05s;}
+.aj-chips.is-in .aj-chip:nth-child(2){animation-delay:.15s;}
+.aj-chips.is-in .aj-chip:nth-child(3){animation-delay:.25s;}
+.aj-chips.is-in .aj-chip:nth-child(4){animation-delay:.35s;}
+@keyframes aj-chip-pop{from{opacity:0;transform:translateY(10px) scale(.94);}to{opacity:1;transform:none;}}
+
+/* [N8] Sticky bar — rotation infinie des messages (si Quantité_minimum définie) */
+.aj-btn-rotator{position:relative;flex:1;height:1.5em;overflow:hidden;display:block;}
+.aj-btn-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
+.aj-btn-msg:nth-child(1){animation:aj-swap-a 7s cubic-bezier(.45,0,.25,1) infinite;}
+.aj-btn-msg:nth-child(2){animation:aj-swap-b 7s cubic-bezier(.45,0,.25,1) infinite;}
+/* un seul message (pas de MOQ) → pas d'animation */
+.aj-btn-msg:only-child{position:static;animation:none;}
+@keyframes aj-swap-a{
+  0%,40%{transform:translateY(0);opacity:1;}
+  48%,90%{transform:translateY(-120%);opacity:0;}
+  98%,100%{transform:translateY(0);opacity:1;}}
+@keyframes aj-swap-b{
+  0%,40%{transform:translateY(120%);opacity:0;}
+  48%,90%{transform:translateY(0);opacity:1;}
+  98%,100%{transform:translateY(120%);opacity:0;}}
