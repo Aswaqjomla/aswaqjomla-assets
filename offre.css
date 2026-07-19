@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════
    ASWAQ JOMLA — offre.css  (v1.0.0)
-   Page offre redesign — design offers + données 2026
+   Page offre redesign — design Tirma + données 2026
    Repo : Aswaqjomla/aswaqjomla-assets
    Charger via :
    https://cdn.jsdelivr.net/gh/Aswaqjomla/aswaqjomla-assets@v1.0.0/offre.css
@@ -189,8 +189,9 @@
 .aj-plaque-moq{flex:0 1 auto;min-width:96px;max-width:46%;padding:12px;}
 .aj-plaque-moq span,.aj-plaque-moq .aj-plaque-moq-label{white-space:normal;line-height:1.25;}
 
-/* [N6] Carte vendeur — meta sur sa propre ligne */
-.aj-seller-meta{display:block;margin-top:2px;}
+/* [N6] Carte vendeur — métas en ligne sous le nom (gère plusieurs blocs .aj-seller-meta frères) */
+.aj-seller-name{display:block;}
+.aj-seller-meta{display:inline;margin:0;}
 .aj-seller-meta > *{display:inline;}
 
 /* [N9] Pill poids : forcer les blocs Webflow en ligne (ils s'empilaient sur 3 lignes) */
