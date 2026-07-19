@@ -31,9 +31,11 @@
 .aj-crumb a{color:var(--accent);text-decoration:none;font-weight:500;}
 .aj-crumb span{margin:0 6px;color:#c9c1b8;}
 
-/* ── Layout haut : galerie + résumé ── */
-.aj-top{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;}
-@media(max-width:760px){.aj-top{grid-template-columns:1fr;}}
+/* ── Layout haut : galerie + résumé ──
+   minmax(0,…) : les colonnes fr peuvent rétrécir sous leur contenu (fix overflow paysage)
+   breakpoint 900px : téléphones en paysage restent en 1 colonne */
+.aj-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;}
+@media(max-width:900px){.aj-top{grid-template-columns:minmax(0,1fr);}}
 
 /* ── Galerie ── */
 .aj-gal{display:flex;flex-direction:column;gap:10px;}
