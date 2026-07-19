@@ -227,3 +227,13 @@
   0%,40%{transform:translateY(120%);opacity:0;}
   48%,90%{transform:translateY(0);opacity:1;}
   98%,100%{transform:translateY(120%);opacity:0;}}
+
+/* ════════════════════════════════════════════════════════════
+   v1.1.2 — vignettes scrollables quand la vidéo existe
+   ════════════════════════════════════════════════════════════ */
+.aj-gal-thumbs.has-video{display:flex;overflow-x:auto;gap:10px;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  padding-bottom:4px;scrollbar-width:thin;}
+.aj-gal-thumbs.has-video::-webkit-scrollbar{height:4px;}
+.aj-gal-thumbs.has-video::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.aj-gal-thumbs.has-video .aj-gal-thumb{flex:0 0 76px;width:76px;scroll-snap-align:start;}
