@@ -237,3 +237,16 @@
 .aj-gal-thumbs.has-video::-webkit-scrollbar{height:4px;}
 .aj-gal-thumbs.has-video::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 .aj-gal-thumbs.has-video .aj-gal-thumb{flex:0 0 76px;width:76px;scroll-snap-align:start;}
+
+/* ════════════════════════════════════════════════════════════
+   v1.1.3 — correctifs structure Webflow (source réel)
+   ════════════════════════════════════════════════════════════ */
+/* Prix "150 / MAD" en blocs empilés → une seule ligne */
+.aj-plaque-prix-val{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
+.aj-plaque-prix-val > *{display:inline;}
+/* Chips injectées dans .aj-var-title → passage à la ligne propre, sans uppercase */
+.aj-var-title{flex-wrap:wrap;}
+.aj-var-title .aj-var-chips{flex-basis:100%;margin-top:10px;}
+.aj-var-chips{text-transform:none;letter-spacing:normal;font-weight:600;}
+/* Messages sticky : contenus en blocs → en ligne */
+.aj-btn-msg > *{display:inline;white-space:nowrap;}
