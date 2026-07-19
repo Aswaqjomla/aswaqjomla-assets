@@ -250,3 +250,12 @@
 .aj-var-chips{text-transform:none;letter-spacing:normal;font-weight:600;}
 /* Messages sticky : contenus en blocs → en ligne */
 .aj-btn-msg > *{display:inline;white-space:nowrap;}
+
+/* ════════════════════════════════════════════════════════════
+   v1.1.4 — espacement métas vendeur + garde anti-débordement
+   ════════════════════════════════════════════════════════════ */
+.aj-seller-meta + .aj-seller-meta{margin-left:4px;}
+/* Garde : plus jamais de scroll horizontal qui décale tout le padding droit */
+.aj-offre-page{overflow-x:hidden;}
+.aj-wrap{min-width:0;}
+.aj-vars,.aj-var-card,.aj-sum > *{min-width:0;max-width:100%;}
