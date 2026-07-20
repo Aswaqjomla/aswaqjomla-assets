@@ -1,0 +1,188 @@
+/* ════════════════════════════════════════════════════════════
+   ASWAQ JOMLA — home.css  (v1.0.0)
+   Site principal aswaqjomla.com — Section 1 : nav + auth + hero + board
+   Repo : Aswaqjomla/aswaqjomla-assets · charger via jsDelivr tag
+   NB : chargé site-wide (Project Settings) — le body du site principal
+   adopte la base crème ; polices chargées via <link> dans le head.
+   ════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════
+   ASWAQ JOMLA — HOME v1 · Section 1 (nav + hero)
+   Même système que Derb Ghallef : aj- classes, palette chaude
+   ════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#161310; --surface:#f7f4ef; --card:#ffffff;
+  --accent:#c8522a; --accent-deep:#8f3517;
+  --brass:#a87420; --brass-soft:#f4ead2;
+  --green:#1d7a45; --green-soft:#e8f5ee;
+  --border:#e6dfd6; --muted:#8a8078;
+  --radius:16px; --shadow:0 2px 18px rgba(60,40,20,.08);
+}
+body{font-family:'Inter',sans-serif;background:var(--surface);color:var(--ink);line-height:1.55;}
+.aj-ar{font-family:'Tajawal',sans-serif;}
+.aj-wrap{max-width:1080px;margin:0 auto;padding:0 18px;}
+
+/* ─────────────── NAVBAR — crème (fond exact du logo #F2EDE2) ─────────────── */
+.aj-nav{position:sticky;top:0;z-index:100;background:#f2ede2;
+  border-bottom:1px solid var(--border);}
+.aj-nav-in{max-width:1080px;margin:0 auto;padding:0 18px;height:66px;
+  display:flex;align-items:center;gap:22px;}
+.aj-nav-logo{display:flex;align-items:center;flex-shrink:0;text-decoration:none;margin-left:auto;}
+.aj-nav-logo img{height:44px;width:auto;display:block;}
+.aj-nav-links{display:flex;gap:20px;}
+.aj-nav-link{font-size:14px;font-weight:600;color:#5c544b;text-decoration:none;transition:color .15s;}
+.aj-nav-link:hover{color:var(--accent);}
+.aj-nav-auth{display:flex;align-items:center;gap:10px;}
+/* — état DÉCONNECTÉ (Webflow : wrapper data-ms-content="!members") — */
+.aj-nav-login{font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;padding:9px 6px;}
+.aj-nav-cta{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;
+  background:var(--accent);text-decoration:none;padding:10px 18px;border-radius:11px;
+  box-shadow:0 3px 12px rgba(200,82,42,.25);transition:background .15s;}
+.aj-nav-cta:hover{background:var(--accent-deep);}
+/* — état CONNECTÉ (Webflow : wrapper data-ms-content="members") — */
+.aj-nav-member{display:none;align-items:center;gap:10px;}
+.aj-nav-member.is-authed{display:flex;}
+.aj-nav-account{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;
+  color:var(--ink);text-decoration:none;background:var(--card);border:1px solid var(--border);
+  padding:8px 14px;border-radius:11px;}
+.aj-nav-account .dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+.aj-nav-logout{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;}
+.aj-nav-logout:hover{color:var(--accent);}
+/* burger mobile — à gauche */
+.aj-nav-burger{display:none;background:none;border:none;cursor:pointer;padding:8px 8px 8px 0;}
+.aj-nav-burger span{display:block;width:22px;height:2.5px;background:var(--ink);border-radius:2px;margin:4.5px 0;}
+@media(max-width:860px){
+  .aj-nav-links{display:none;}
+  .aj-nav-auth{display:none;}
+  .aj-nav-member.is-authed{display:none;}
+  .aj-nav-burger{display:block;}
+}
+
+
+/* ─────────────── ESPACE MEMBRE — panneau révélé (hors navbar) ───────────────
+   Production Webflow : wrapper avec data-ms-content="members"
+   (visible uniquement connecté) · bouton Se déconnecter : data-ms-action="logout" */
+.aj-member-panel{max-height:0;overflow:hidden;scroll-margin-top:66px;background:#efe9db;
+  border-bottom:1px solid var(--border);
+  transition:max-height .5s cubic-bezier(.22,.61,.36,1);}
+body.is-panel-open .aj-member-panel{max-height:320px;}
+.aj-member-panel-in{max-width:1080px;margin:0 auto;padding:18px;
+  display:flex;gap:12px;flex-wrap:wrap;align-items:stretch;}
+.aj-member-hello{flex-basis:100%;}
+.aj-member-hello{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--ink);
+  opacity:0;transform:translateY(14px);}
+.aj-member-card{flex:1 1 180px;display:flex;align-items:center;justify-content:center;gap:9px;
+  background:var(--card);border:1px solid var(--border);border-radius:13px;
+  padding:12px 18px;font-size:14px;font-weight:600;color:var(--ink);
+  text-decoration:none;box-shadow:var(--shadow);cursor:pointer;
+  opacity:0;transform:translateY(14px) scale(.96);
+  transition:border-color .15s;}
+.aj-member-card:hover{border-color:var(--accent);}
+.aj-member-card .ico{width:30px;height:30px;border-radius:9px;background:var(--brass-soft);
+  display:flex;align-items:center;justify-content:center;font-size:15px;}
+.aj-member-card--logout{color:#a03c22;}
+.aj-member-card--logout .ico{background:#fdf0ee;}
+body.is-panel-open .aj-member-hello{animation:aj-card-in .5s cubic-bezier(.22,.61,.36,1) .05s forwards;}
+body.is-panel-open .aj-member-card{animation:aj-card-in .5s cubic-bezier(.22,.61,.36,1) .15s forwards;}
+body.is-panel-open .aj-member-card + .aj-member-card{animation-delay:.3s;}
+@keyframes aj-card-in{to{opacity:1;transform:translateY(0) scale(1);}}
+/* états : connecté → cacher auth navbar + œil, montrer Se déconnecter flottant */
+body.is-member .aj-nav-auth{display:none;}
+body.is-member #demo-eye{display:none;}
+#logout-float{display:none;}
+body.is-member #logout-float{display:block;}
+body.is-member .aj-member-panel{max-height:0;}
+
+/* ─────────────── HERO ─────────────── */
+.aj-hero{padding:56px 0 64px;position:relative;overflow:hidden;}
+/* motif zellige discret en fond */
+.aj-hero::before{content:"";position:absolute;inset:0;
+  background-image:radial-gradient(circle at 1px 1px, rgba(168,116,32,.10) 1px, transparent 0);
+  background-size:22px 22px;pointer-events:none;}
+.aj-hero-in{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+  gap:44px;align-items:center;}
+@media(max-width:900px){.aj-hero-in{grid-template-columns:minmax(0,1fr);gap:32px;}}
+
+
+/* ── Typewriter bilingue du hero ── */
+.aj-type-h1{font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(34px,6vw,58px);line-height:1.12;letter-spacing:-.01em;
+  min-height:2.3em;margin-bottom:22px;display:block;}
+.aj-type-h1 .is-ar{font-family:'Tajawal',sans-serif;font-weight:800;}
+.aj-type-h1 .is-fr{font-size:.6em;letter-spacing:-.005em;}
+.aj-caret{display:inline-block;width:.09em;height:1em;background:var(--accent);
+  margin-left:4px;vertical-align:-0.12em;animation:aj-caret-blink 1s steps(2) infinite;}
+@keyframes aj-caret-blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+
+.aj-hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--brass-soft);
+  border:1px solid #e2d2ab;color:#6e4d0e;border-radius:100px;padding:7px 15px;
+  font-size:12.5px;font-weight:700;margin-bottom:18px;}
+.aj-hero h1{font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(34px,5.5vw,54px);line-height:1.06;letter-spacing:-.01em;margin-bottom:8px;}
+.aj-hero h1 em{font-style:normal;color:var(--accent);}
+.aj-hero-ar{font-family:'Tajawal',sans-serif;font-weight:800;direction:rtl;text-align:left;
+  font-size:clamp(19px,3vw,26px);color:var(--brass);margin-bottom:16px;}
+.aj-hero-sub{font-size:16px;color:#5c544b;max-width:46ch;margin-bottom:26px;}
+.aj-hero-sub b{color:var(--ink);}
+.aj-hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.aj-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;text-decoration:none;
+  padding:15px 24px;border-radius:13px;transition:transform .12s;}
+.aj-btn:active{transform:scale(.97);}
+.aj-btn--primary{background:var(--accent);color:#fff;box-shadow:0 5px 18px rgba(200,82,42,.3);}
+.aj-btn--primary:hover{background:var(--accent-deep);}
+.aj-btn--ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--border);}
+.aj-btn--ghost:hover{border-color:var(--accent);color:var(--accent);}
+.aj-btn .aj-ar{font-weight:500;font-size:13px;opacity:.85;}
+
+/* ── SIGNATURE : le tableau des souks (façon tableau du marché) ── */
+.aj-board{background:var(--ink);border-radius:20px;padding:22px 20px 18px;
+  box-shadow:0 18px 44px rgba(22,19,16,.28);position:relative;}
+.aj-board-head{display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:14px;padding:0 4px;}
+.aj-board-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:#b3a68f;}
+.aj-board-title-ar{font-family:'Tajawal',sans-serif;font-size:13.5px;color:#8a7d68;direction:rtl;}
+.aj-board-row{display:flex;align-items:center;gap:14px;padding:14px 12px;
+  border-radius:13px;text-decoration:none;transition:background .15s;}
+.aj-board-row + .aj-board-row{border-top:1px dashed rgba(179,166,143,.22);margin-top:7px;}
+.aj-board-row.is-live{background:rgba(29,122,69,.10);}
+.aj-board-row.is-live:hover{background:rgba(29,122,69,.18);}
+.aj-board-souk{flex:1;min-width:0;}
+.aj-board-souk b{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#f2ece2;}
+.aj-board-name-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:3px;}
+.aj-board-right{display:inline-flex;align-items:center;gap:10px;}
+.aj-board-souk span{font-size:12px;color:#8a7d68;}
+.aj-board-status{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;
+  padding:6px 12px;border-radius:100px;white-space:nowrap;text-decoration:none;}
+.aj-board-status .arrw{font-weight:800;font-size:14px;margin-left:2px;}
+a.aj-board-status{cursor:pointer;transition:background .15s;}
+.is-live a.aj-board-status:hover{background:rgba(29,122,69,.34);}
+.aj-board-status .pulse{width:8px;height:8px;border-radius:50%;}
+.is-live .aj-board-status{background:rgba(29,122,69,.2);color:#5fd28f;}
+.is-live .pulse{background:#5fd28f;animation:aj-pulse 1.6s ease-out infinite;}
+@keyframes aj-pulse{0%{box-shadow:0 0 0 0 rgba(95,210,143,.55);}70%{box-shadow:0 0 0 9px rgba(95,210,143,0);}100%{box-shadow:0 0 0 0 rgba(95,210,143,0);}}
+.is-soon .aj-board-status{background:rgba(179,166,143,.14);color:#b3a68f;}
+.is-soon .pulse{background:#8a7d68;}
+.is-soon .aj-board-souk b{color:#9d907b;}
+.aj-board-arrow{color:#5fd28f;font-size:18px;flex-shrink:0;}
+.is-soon .aj-board-arrow{display:none;}
+.aj-board-foot{margin-top:12px;padding:0 6px;font-size:11.5px;color:#8a7d68;
+  display:flex;justify-content:space-between;gap:10px;}
+.aj-board-foot .aj-ar{direction:rtl;}
+
+
+/* ── SECTEURS — marquee compact DANS la ligne Derbghalef ──
+   Webflow : Collection List "Secteurs" (image + nom FR + nom AR) dans .aj-marquee-track */
+.aj-board-sectors{margin-top:12px;overflow:hidden;border-radius:12px;}
+.aj-marquee-track{display:flex;gap:12px;will-change:transform;transition:transform .65s cubic-bezier(.22,.61,.36,1);}
+.aj-sector-card{flex:0 0 150px;background:#2a251f;border:1px solid rgba(179,166,143,.25);
+  border-radius:12px;overflow:hidden;display:block;text-decoration:none;
+  transition:border-color .15s, transform .15s;}
+.aj-sector-card:hover{border-color:#5fd28f;transform:translateY(-2px);}
+.aj-sector-card img{width:100%;height:74px;object-fit:cover;display:block;background:#3a332b;}
+.aj-sector-card .t{padding:8px 10px;display:flex;justify-content:space-between;gap:6px;align-items:baseline;}
+.aj-sector-card .t b{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;color:#f2ece2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.aj-sector-card .t .aj-ar{font-size:10.5px;color:#b3a68f;white-space:nowrap;}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
