@@ -199,3 +199,19 @@ a.aj-board-status{cursor:pointer;transition:background .15s;}
 .aj-sector-card .t .aj-ar{font-size:10.5px;color:#b3a68f;white-space:nowrap;}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+
+
+/* ════════════════════════════════════════════════════════════
+   v1.2.2 — marquee scrollable au doigt + cartes uniformes + pastille
+   ════════════════════════════════════════════════════════════ */
+/* [2] tailles uniformes : le flex s'applique aux Collection Items Webflow */
+.aj-marquee-track{transition:none;width:max-content;}
+.aj-marquee-track > *{flex:0 0 150px;min-width:150px;max-width:150px;}
+.aj-marquee-track .aj-sector-card{width:100%;}
+/* [3] conteneur scrollable (doigt/souris) — le script gère l'auto-avance */
+.aj-board-sectors{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;cursor:grab;}
+.aj-board-sectors::-webkit-scrollbar{display:none;}
+.aj-board-sectors.is-dragging{cursor:grabbing;user-select:none;}
+/* [1] pastille verte : taille garantie même en flex */
+.aj-board-status .pulse{flex:0 0 8px;display:inline-block;}
