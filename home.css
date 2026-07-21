@@ -227,3 +227,12 @@ a.aj-board-status{cursor:pointer;transition:background .15s;}
 .aj-marquee-track .aj-sector-card img{height:150px;object-fit:cover;flex:0 0 150px;}
 .aj-marquee-track .aj-sector-card .t{height:40px;align-items:center;flex:0 0 40px;overflow:hidden;}
 .aj-board-sectors{scroll-snap-type:x mandatory;}
+
+
+/* ════════════════════════════════════════════════════════════
+   v1.2.4 — nom FR seul sur la carte secteur (l'arabe vit dans l'image)
+   ════════════════════════════════════════════════════════════ */
+.aj-marquee-track .aj-sector-card .t{justify-content:flex-start;}
+.aj-marquee-track .aj-sector-card .t > *{font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;color:#f2ece2;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
