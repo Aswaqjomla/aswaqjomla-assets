@@ -261,3 +261,8 @@
 .aj-offre-page{overflow-x:hidden;}
 .aj-wrap{min-width:0;}
 .aj-vars,.aj-var-card,.aj-sum > *{min-width:0;max-width:100%;}
+/* ── produit entier visible (contain au lieu de crop) + vignettes vidéo plus grandes ── */
+.aj-gal-main img{object-fit:contain;background:#f3eee6;}
+.aj-gal-main .aj-gal-video mux-player{--media-object-fit:contain;}
+.aj-gal-thumb img{object-fit:contain;background:#f3eee6;}
+.aj-gal-thumbs.has-video .aj-gal-thumb{flex:0 0 96px;width:96px;}
