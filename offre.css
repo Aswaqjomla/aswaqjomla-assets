@@ -253,16 +253,24 @@
 /* Messages sticky : contenus en blocs → en ligne */
 .aj-btn-msg > *{display:inline;white-space:nowrap;}
 
-/* ════════════════════════════════════════════════════════════
-   v1.1.4 — espacement métas vendeur + garde anti-débordement
-   ════════════════════════════════════════════════════════════ */
-.aj-seller-meta + .aj-seller-meta{margin-left:4px;}
-/* Garde : plus jamais de scroll horizontal qui décale tout le padding droit */
-.aj-offre-page{overflow-x:hidden;}
-.aj-wrap{min-width:0;}
-.aj-vars,.aj-var-card,.aj-sum > *{min-width:0;max-width:100%;}
-/* ── produit entier visible (contain au lieu de crop) + vignettes vidéo plus grandes ── */
+/* ── média principal : 25rem, produit entier ── */
+.aj-gal-main{height:25rem;aspect-ratio:auto;width:100%;}
 .aj-gal-main img{object-fit:contain;background:#f3eee6;}
-.aj-gal-main .aj-gal-video mux-player{--media-object-fit:contain;}
 .aj-gal-thumb img{object-fit:contain;background:#f3eee6;}
-.aj-gal-thumbs.has-video .aj-gal-thumb{flex:0 0 96px;width:96px;}
+/* ── bouton vidéo ── */
+.aj-video-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  margin-top:10px;padding:13px 16px;border:1.5px solid var(--border);border-radius:13px;
+  background:var(--card);font-family:'Syne',sans-serif;font-weight:700;font-size:14px;
+  color:var(--ink);cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s,color .15s;}
+.aj-video-btn:hover{border-color:var(--accent);color:var(--accent);}
+/* ── overlay plein écran ── */
+.aj-video-overlay{position:fixed;inset:0;z-index:1000;background:rgba(15,12,9,.85);
+  display:none;align-items:center;justify-content:center;padding:4vh 4vw;}
+.aj-video-overlay.is-open{display:flex;}
+.aj-video-overlay mux-player{width:min(92vw,900px);max-height:90vh;--media-object-fit:contain;
+  background:#000;border-radius:14px;overflow:hidden;}
+.aj-video-close{position:absolute;top:14px;right:16px;z-index:1001;background:rgba(255,255,255,.14);
+  border:none;color:#fff;font-size:20px;width:42px;height:42px;border-radius:50%;cursor:pointer;}
+body.aj-no-scroll{overflow:hidden;}
+
+
