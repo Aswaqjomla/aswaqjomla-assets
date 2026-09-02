@@ -11,7 +11,7 @@
 
 .aj-offre-page{
   --ink:#161310; --surface:#f7f4ef; --card:#ffffff;
-  --accent:#4B50E6; --accent-deep:#8f3517;
+  --accent:#4B50E6; --accent-deep:#3a3fc9;
   --brass:#6b6fd8; --brass-soft:#f4ead2;
   --border:#e6dfd6; --muted:#8a8078;
   --radius:16px; --shadow:0 2px 18px rgba(75,80,230,.08);
@@ -147,7 +147,7 @@
   padding:15px 18px;font-family:'Syne',sans-serif;font-size:15.5px;font-weight:700;
   text-decoration:none;transition:transform .12s;cursor:pointer;border:none;}
 .aj-btn:active{transform:scale(.98);}
-.aj-btn-order{flex:1;background:var(--accent);color:#fff;box-shadow:0 4px 18px rgba(200,82,42,.3);}
+.aj-btn-order{flex:1;background:var(--accent);color:#fff;box-shadow:0 4px 18px rgba(75,80,230,.3);}
 .aj-btn-order:hover{background:var(--accent-deep);}
 .aj-btn .aj-ar{font-family:'Tajawal',sans-serif;font-weight:500;font-size:13px;opacity:.9;}
 
@@ -273,4 +273,14 @@
   border:none;color:#fff;font-size:20px;width:42px;height:42px;border-radius:50%;cursor:pointer;}
 body.aj-no-scroll{overflow:hidden;}
 
+/* ════════════════════════════════════════════════════════════
+   v1.1.9 — palette indigo + média principal en carte + coins vignettes
+   ════════════════════════════════════════════════════════════ */
+/* média principal : lisible comme carte pleine largeur (les bandes
+   de pillarbox deviennent un fond de carte, plus d'effet "décalé") */
+.aj-gal-main{background:var(--card);border:1px solid var(--border);}
+.aj-gal-main img{background:var(--card);}
 
+/* vignettes : image collée aux coins du conteneur */
+.aj-gal-thumb{padding:0 !important;}
+.aj-gal-thumb img{border-radius:inherit;}
