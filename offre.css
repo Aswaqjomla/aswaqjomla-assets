@@ -274,18 +274,12 @@
 body.aj-no-scroll{overflow:hidden;}
 
 /* ════════════════════════════════════════════════════════════
-   v1.1.10 — l'image principale remplit toute la largeur
+   v1.1.11 — média principal : hauteur fixe uniforme + remplissage
    ════════════════════════════════════════════════════════════ */
-/* mobile : l'image impose sa hauteur (aucune bande), plafonnée */
-.aj-gal-main{height:auto;background:var(--card);border:1px solid var(--border);}
-.aj-gal-main img{width:100%;height:auto;max-height:34rem;
+.aj-gal-main{height:25rem;aspect-ratio:auto;width:100%;
+  background:var(--card);border:1px solid var(--border);}
+.aj-gal-main img{width:100%;height:100%;max-height:none;
   object-fit:cover;object-position:center;display:block;}
-
-/* desktop : hauteur fixe conservée pour la grille, remplie en cover */
-@media(min-width:901px){
-  .aj-gal-main{height:25rem;}
-  .aj-gal-main img{height:100%;max-height:none;}
-}
 
 /* vignettes : image collée aux coins du conteneur */
 .aj-gal-thumb{padding:0 !important;}
