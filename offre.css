@@ -274,12 +274,18 @@
 body.aj-no-scroll{overflow:hidden;}
 
 /* ════════════════════════════════════════════════════════════
-   v1.1.9 — palette indigo + média principal en carte + coins vignettes
+   v1.1.10 — l'image principale remplit toute la largeur
    ════════════════════════════════════════════════════════════ */
-/* média principal : lisible comme carte pleine largeur (les bandes
-   de pillarbox deviennent un fond de carte, plus d'effet "décalé") */
-.aj-gal-main{background:var(--card);border:1px solid var(--border);}
-.aj-gal-main img{background:var(--card);}
+/* mobile : l'image impose sa hauteur (aucune bande), plafonnée */
+.aj-gal-main{height:auto;background:var(--card);border:1px solid var(--border);}
+.aj-gal-main img{width:100%;height:auto;max-height:34rem;
+  object-fit:cover;object-position:center;display:block;}
+
+/* desktop : hauteur fixe conservée pour la grille, remplie en cover */
+@media(min-width:901px){
+  .aj-gal-main{height:25rem;}
+  .aj-gal-main img{height:100%;max-height:none;}
+}
 
 /* vignettes : image collée aux coins du conteneur */
 .aj-gal-thumb{padding:0 !important;}
