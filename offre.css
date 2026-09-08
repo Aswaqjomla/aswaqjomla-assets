@@ -264,6 +264,11 @@ body.aj-no-scroll{overflow:hidden;}
   background:rgba(15,12,9,.6);color:#fff;font-size:17px;line-height:1;
   display:flex;align-items:center;justify-content:center;
   -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
+.aj-gal-expand{position:absolute;bottom:14px;right:12px;z-index:7;
+  width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(15,12,9,.6);color:#fff;font-size:18px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
 /* lightbox photos */
 .aj-photo-lightbox{position:fixed;inset:0;z-index:1000;background:rgba(15,12,9,.92);
   display:none;align-items:center;justify-content:center;padding:4vh 0;}
