@@ -300,20 +300,32 @@ function goToProStep3() {
     if (ms_name) document.getElementById('pro-fullname').value = ms_name;
   }
 }
-function backToProStep1() {
-  document.getElementById('pro-step-2').style.display = 'none';
-  document.getElementById('pro-step-1').style.display = 'block';
-  document.getElementById('pro-step-2-ind').classList.remove('active');
-  document.getElementById('pro-step-1-ind').classList.remove('done');
-  document.getElementById('pro-step-1-ind').classList.add('active');
+// ─── STEP INDICATORS CLICKABLE (backward only) ────────────────
+function proCurrentStep() {
+  if (document.getElementById('pro-step-3').style.display === 'block') return 3;
+  if (document.getElementById('pro-step-2').style.display === 'block') return 2;
+  return 1;
 }
-function backToProStep2() {
-  document.getElementById('pro-step-3').style.display = 'none';
-  document.getElementById('pro-step-2').style.display = 'block';
-  document.getElementById('pro-step-3-ind').classList.remove('active');
-  document.getElementById('pro-step-2-ind').classList.remove('done');
-  document.getElementById('pro-step-2-ind').classList.add('active');
+function proShowStep(n) {
+  [1,2,3].forEach(function(i){
+    var panel = document.getElementById('pro-step-'+i);
+    var ind   = document.getElementById('pro-step-'+i+'-ind');
+    if (panel) panel.style.display = (i === n) ? 'block' : 'none';
+    if (ind) {
+      ind.classList.remove('active','done');
+      if (i < n)   ind.classList.add('done');
+      if (i === n) ind.classList.add('active');
+    }
+  });
 }
+[1,2,3].forEach(function(i){
+  var ind = document.getElementById('pro-step-'+i+'-ind');
+  if (!ind) return;
+  ind.style.cursor = 'pointer';
+  ind.addEventListener('click', function(){
+    if (i < proCurrentStep()) proShowStep(i);  // retour uniquement — jamais en avant
+  });
+});
 
 // Step 1 — validate and create Memberstack account (manual)
 async function proStep1Next() {
