@@ -59,6 +59,25 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
   document.getElementById('panel-' + tab).classList.add('active');
 }
+// ─── STEP 0 : choix du type de compte ─────────────────────────
+function ajChooseType(t) {
+  var ch = document.getElementById('aj-type-chooser');
+  if (ch) ch.style.display = 'none';
+  document.querySelectorAll('.aj-tabs').forEach(function(el){ el.style.display = 'none'; });
+  var back = document.getElementById('aj-type-back');
+  if (back) back.style.display = 'inline-flex';
+  switchTab(t);
+}
+function ajResetType() {
+  var ch = document.getElementById('aj-type-chooser');
+  if (ch) ch.style.display = 'block';
+  var back = document.getElementById('aj-type-back');
+  if (back) back.style.display = 'none';
+  document.querySelectorAll('.aj-panel').forEach(function(p){ p.classList.remove('active'); });
+}
+// état initial : le chooser est le SEUL contenu visible
+document.querySelectorAll('.aj-tabs').forEach(function(el){ el.style.display = 'none'; });
+document.querySelectorAll('.aj-panel').forEach(function(p){ p.classList.remove('active'); });
 
 // ─── PASSWORD STRENGTH ─────────────────────────────────────────
 document.getElementById('p-password').addEventListener('input', function() {
