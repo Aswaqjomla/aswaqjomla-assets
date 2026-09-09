@@ -300,6 +300,20 @@ function goToProStep3() {
     if (ms_name) document.getElementById('pro-fullname').value = ms_name;
   }
 }
+function backToProStep1() {
+  document.getElementById('pro-step-2').style.display = 'none';
+  document.getElementById('pro-step-1').style.display = 'block';
+  document.getElementById('pro-step-2-ind').classList.remove('active');
+  document.getElementById('pro-step-1-ind').classList.remove('done');
+  document.getElementById('pro-step-1-ind').classList.add('active');
+}
+function backToProStep2() {
+  document.getElementById('pro-step-3').style.display = 'none';
+  document.getElementById('pro-step-2').style.display = 'block';
+  document.getElementById('pro-step-3-ind').classList.remove('active');
+  document.getElementById('pro-step-2-ind').classList.remove('done');
+  document.getElementById('pro-step-2-ind').classList.add('active');
+}
 
 // Step 1 — validate and create Memberstack account (manual)
 async function proStep1Next() {
@@ -452,14 +466,27 @@ async function submitPro() {
   var fullname = gv('pro-fullname');
   var physical = document.getElementById('pro-physical').checked;
   var terms    = document.getElementById('pro-terms').checked;
-  var ok = true;
-
-  if (!phone)            { showE('err-pro-phone'); ok=false; } else hideE('err-pro-phone');
-  if (!proSelectedMarket){ showE('err-pro-market'); ok=false; } else hideE('err-pro-market');
-  if (!proSelectedSector){ showE('err-pro-sector'); ok=false; } else hideE('err-pro-sector');
-  if (!physical)         { showE('err-pro-physical'); ok=false; } else hideE('err-pro-physical');
-  if (!terms)            { showE('err-pro-terms'); ok=false; } else hideE('err-pro-terms');
-  if (!ok) return;
+    var ok = true;
+  var firstMissing = null;
+  if (!phone)            { showE('err-pro-phone');    ok=false; if(!firstMissing) firstMissing='pro-phone'; }    else hideE('err-pro-phone');
+  if (!proSelectedMarket){ showE('err-pro-market');   ok=false; if(!firstMissing) firstMissing='err-pro-market'; } else hideE('err-pro-market');
+  if (!proSelectedSector){ showE('err-pro-sector');   ok=false; if(!firstMissing) firstMissing='err-pro-sector'; } else hideE('err-pro-sector');
+  if (!physical)         { showE('err-pro-physical'); ok=false; if(!firstMissing) firstMissing='pro-physical'; }  else hideE('err-pro-physical');
+  if (!terms)            { showE('err-pro-terms');    ok=false; if(!firstMissing) firstMissing='pro-terms'; }     else hideE('err-pro-terms');
+  if (!ok) {
+    var missEl = document.getElementById(firstMissing);
+    if (missEl) {
+      missEl.scrollIntoView({ behavior:'smooth', block:'center' });
+      if (firstMissing === 'pro-phone') {
+        setTimeout(function(){ try { missEl.focus(); } catch(e){} }, 450);
+      }
+      var flashEl = missEl.closest('.aj-card') || missEl;
+      flashEl.style.transition = 'box-shadow 0.3s';
+      flashEl.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.35)';
+      setTimeout(function(){ flashEl.style.boxShadow = ''; }, 1800);
+    }
+    return;
+  }
 
   var btn = document.querySelector('#pro-step-3 .aj-btn');
   var errBox = document.getElementById('pro-step3-error');
