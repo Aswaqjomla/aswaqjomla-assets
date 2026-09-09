@@ -256,9 +256,14 @@ async function submitParticular() {
 function checkProGate() {
   var pwd = gv('pro-gate-pwd');
   var errEl = document.getElementById('err-gate');
-  if (pwd === PRO_GATE_PASSWORD) {
+    if (pwd === PRO_GATE_PASSWORD) {
     document.getElementById('pro-gate').style.display = 'none';
-    document.getElementById('pro-form-wrap').style.display = 'block';
+    var wrap = document.getElementById('pro-form-wrap');
+    wrap.style.display = 'block';
+    /* ramener le membre en haut du formulaire — le bouton Google d'abord */
+    setTimeout(function(){
+      wrap.scrollIntoView({ behavior:'smooth', block:'start' });
+    }, 60);
   } else {
     errEl.textContent = 'Code incorrect. Veuillez réessayer.';
     errEl.style.display = 'block';
