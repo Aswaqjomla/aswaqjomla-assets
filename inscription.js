@@ -331,7 +331,8 @@ function proShowStep(n) {
 async function proStep1Next() {
   // Check if Google already handled step 1
   if (proGoogleMember) { goToProStep2(); return; }
-
+  // Compte déjà créé (retour depuis étape 2/3) — ne pas re-signup
+  if (proMemberstackId) { goToProStep2(); return; }
   var name     = gv('pro-name');
   var email    = gv('pro-email');
   var password = document.getElementById('pro-password').value;
