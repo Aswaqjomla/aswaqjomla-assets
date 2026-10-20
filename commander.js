@@ -135,7 +135,6 @@ function cmdApplyMode() {
   var qty = document.getElementById('cmd-qty');
   var negoWrap = document.getElementById('cmd-nego-wrap');
   var moqHint = document.getElementById('cmd-moq-hint');
-  var contactWrap = document.getElementById('cmd-contact-wrap');
   if (_orderMode === 'gros') {
     if (qty) {
       qty.min = _offer.moq || 1;
@@ -143,14 +142,12 @@ function cmdApplyMode() {
     }
     if (moqHint) moqHint.textContent = (_offer.moq > 1) ? '⚠️ Commande minimum : ' + _offer.moq : '';
     if (negoWrap) negoWrap.style.display = (_offer.nego > 0) ? 'block' : 'none';
-    if (contactWrap) contactWrap.style.display = 'none';
     cmdResetContact();
   } else {
     if (qty) { qty.min = 1; qty.value = Math.max(1, parseInt(qty.value) || 1); }
     if (moqHint) moqHint.textContent = '';
     if (negoWrap) negoWrap.style.display = 'none';
     cmdResetNego();
-    if (contactWrap) contactWrap.style.display = cmdHasNegoDetail() ? 'block' : 'none';
     cmdResetContact();
   }
   updateCmdPrices();
@@ -303,29 +300,45 @@ function cmdResetNego() {
   if (confirmBtn) confirmBtn.style.display = 'flex';
 }
 
-  // ─── RETAIL CONTACT (Nego Détail) ──────────────────────────────
+// ─── RETAIL CONTACT (Nego Détail) ──────────────────────────────
+// « Contacter le vendeur » à côté de « Confirmer ma commande »,
+// visible uniquement en mode détail quand Nego Détail est activé.
 var _contactReasons = [];
 var _contactChannel = null;
+var CONTACT_ALL = ['Prix', 'Infos', 'Livraison'];
 function cmdHasNegoDetail() {
   var f = document.getElementById('aj-nego-detail-flag');
   return !!f && f.className.indexOf('w-condition-invisible') === -1;
 }
 function cmdShowContactForm() {
-  document.getElementById('cmd-contact-form').style.display = 'block';
-  document.getElementById('cmd-contact-btn').style.display = 'none';
-  document.getElementById('cmd-contact-close').style.display = 'block';
-  var qtyBox = document.getElementById('cmd-qty-box');
-  var notesBox = document.getElementById('cmd-notes-box');
-  var confirmBtn = document.getElementById('cmd-confirm-btn');
-  if (qtyBox) qtyBox.style.display = 'none';
-  if (notesBox) notesBox.style.display = 'none';
-  if (confirmBtn) confirmBtn.style.display = 'none';
+  var w = document.getElementById('cmd-contact-wrap');
+  if (w) w.style.display = 'block';
+  ['cmd-qty-box', 'cmd-notes-box', 'cmd-main-actions'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+  var sheet = document.getElementById('aj-commander-sheet');
+  if (sheet) sheet.scrollTop = 0;
+}
+function cmdPaintReasons() {
+  var all = _contactReasons.indexOf('Tout') !== -1;
+  document.querySelectorAll('.cmd-reason-btn').forEach(function(b){
+    var on = all || _contactReasons.indexOf(b.getAttribute('data-reason')) !== -1;
+    b.classList.toggle('is-on', on);
+  });
 }
 function cmdToggleReason(el) {
   var r = el.getAttribute('data-reason');
-  var i = _contactReasons.indexOf(r);
-  if (i === -1) { _contactReasons.push(r); el.style.background = '#3a3fc9'; el.style.color = '#fff'; }
-  else { _contactReasons.splice(i, 1); el.style.background = '#fff'; el.style.color = '#3a3fc9'; }
+  var all = _contactReasons.indexOf('Tout') !== -1;
+  if (r === 'Tout') {
+    _contactReasons = all ? [] : ['Tout'];
+  } else if (all) {
+    _contactReasons = CONTACT_ALL.filter(function(x){ return x !== r; });
+  } else {
+    var i = _contactReasons.indexOf(r);
+    if (i !== -1) _contactReasons.splice(i, 1); else _contactReasons.push(r);
+    if (_contactReasons.length === CONTACT_ALL.length) _contactReasons = ['Tout'];
+  }
+  cmdPaintReasons();
   cmdContactCheck();
 }
 function cmdSetContactChannel(ch) {
@@ -346,28 +359,31 @@ function cmdContactCheck() {
 }
 function cmdResetContact() {
   _contactReasons = [];
-  _contactChannel = null;
-  var f = document.getElementById('cmd-contact-form');
-  if (!f) return;
-  f.style.display = 'none';
-  document.getElementById('cmd-contact-btn').style.display = 'inline-block';
-  document.getElementById('cmd-contact-close').style.display = 'none';
-  document.getElementById('cmd-contact-phone').value = '';
-  document.querySelectorAll('.cmd-reason-btn').forEach(function(b){ b.style.background = '#fff'; b.style.color = '#3a3fc9'; });
+  var w = document.getElementById('cmd-contact-wrap');
+  if (!w) return;
+  w.style.display = 'none';
+  var p = document.getElementById('cmd-contact-phone');
+  if (p) p.value = '';
+  cmdPaintReasons();
   cmdSetContactChannel(null);
   _contactChannel = null;
   var b = document.getElementById('cmd-contact-confirm-btn');
+  var h = document.getElementById('cmd-contact-hint');
   if (b) b.style.display = 'none';
-  var qtyBox = document.getElementById('cmd-qty-box');
-  var notesBox = document.getElementById('cmd-notes-box');
+  if (h) h.style.display = 'none';
+  ['cmd-qty-box', 'cmd-notes-box'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.style.display = 'block';
+  });
+  var actions = document.getElementById('cmd-main-actions');
+  if (actions) actions.style.display = 'flex';
   var confirmBtn = document.getElementById('cmd-confirm-btn');
-  if (qtyBox) qtyBox.style.display = 'block';
-  if (notesBox) notesBox.style.display = 'block';
   if (confirmBtn) confirmBtn.style.display = 'flex';
+  var contactBtn = document.getElementById('cmd-contact-btn');
+  if (contactBtn) contactBtn.style.display = (_orderMode === 'detail' && cmdHasNegoDetail()) ? 'flex' : 'none';
 }
 var _contactPhoneEl = document.getElementById('cmd-contact-phone');
 if (_contactPhoneEl) _contactPhoneEl.addEventListener('input', cmdContactCheck);
-  
+
 // ─── COMMANDER POPUP ───────────────────────────────────────────
 async function openCommanderPopup() {
   document.getElementById('cmd-offer-img').src          = _offer.offerImage || '';
@@ -406,7 +422,7 @@ async function openCommanderPopup() {
     _orderMode = 'detail';
   }
 
-    if (_offer.nego > 0) {
+  if (_offer.nego > 0) {
     var _gp = _offer.priceGros > 0 ? _offer.priceGros : _offer.price;
     if (_gp > 0) {
       // price set + negotiation accepted
@@ -524,6 +540,8 @@ function cmdConfirmOrder() {
     if (_negoBtn) _negoBtn.style.display = 'none';
     var _contactBtn = document.getElementById('cmd-contact-confirm-btn');
     if (_contactBtn) _contactBtn.style.display = 'none';
+    var _contactOpenBtn = document.getElementById('cmd-contact-btn');
+    if (_contactOpenBtn) _contactOpenBtn.style.display = 'none';
     var _negoHint = document.getElementById('cmd-nego-hint');
     if (_negoHint) _negoHint.style.display = 'none';
     var _contactHint = document.getElementById('cmd-contact-hint');
