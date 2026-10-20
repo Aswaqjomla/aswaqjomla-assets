@@ -295,7 +295,7 @@ function cmdResetNego() {
   var qtyBox   = document.getElementById('cmd-qty-box');
   var notesBox = document.getElementById('cmd-notes-box');
   if (qtyBox)   qtyBox.style.display   = 'block';
-  if (notesBox) notesBox.style.display = 'block';
+  if (notesBox) notesBox.style.display = 'none';
   var confirmBtn = document.getElementById('cmd-confirm-btn');
   if (confirmBtn) confirmBtn.style.display = 'flex';
 }
@@ -313,9 +313,12 @@ function cmdHasNegoDetail() {
 function cmdShowContactForm() {
   var w = document.getElementById('cmd-contact-wrap');
   if (w) w.style.display = 'block';
-  ['cmd-qty-box', 'cmd-notes-box', 'cmd-main-actions'].forEach(function(id){
+  ['cmd-qty-box', 'cmd-main-actions'].forEach(function(id){
     var el = document.getElementById(id); if (el) el.style.display = 'none';
   });
+  /* la note vocale n'existe que dans ce formulaire de contact */
+  var notesBox = document.getElementById('cmd-notes-box');
+  if (notesBox) notesBox.style.display = 'block';
   var sheet = document.getElementById('aj-commander-sheet');
   if (sheet) sheet.scrollTop = 0;
 }
@@ -371,9 +374,12 @@ function cmdResetContact() {
   var h = document.getElementById('cmd-contact-hint');
   if (b) b.style.display = 'none';
   if (h) h.style.display = 'none';
-  ['cmd-qty-box', 'cmd-notes-box'].forEach(function(id){
-    var el = document.getElementById(id); if (el) el.style.display = 'block';
-  });
+  var qtyBox = document.getElementById('cmd-qty-box');
+  if (qtyBox) qtyBox.style.display = 'block';
+  var notesBox = document.getElementById('cmd-notes-box');
+  if (notesBox) notesBox.style.display = 'none';
+  if (_cmdIsRecording) cmdStopRecording();
+  cmdDiscardRecording();
   var actions = document.getElementById('cmd-main-actions');
   if (actions) actions.style.display = 'flex';
   var confirmBtn = document.getElementById('cmd-confirm-btn');
@@ -664,7 +670,7 @@ function cmdDiscardRecording() {
   _cmdAudioBlob = null;
   document.getElementById('cmd-audio-player').src = '';
   document.getElementById('cmd-audio-preview').style.display = 'none';
-  document.getElementById('cmd-rec-status').textContent = 'Appuyez pour enregistrer votre commande';
+  document.getElementById('cmd-rec-status').textContent = 'Appuyez pour laisser un message vocal au vendeur';
   document.getElementById('cmd-rec-status').style.color = '#8a8480';
   document.getElementById('cmd-rec-timer').style.display = 'none';
   document.getElementById('cmd-rec-timer').textContent = '0:00';
