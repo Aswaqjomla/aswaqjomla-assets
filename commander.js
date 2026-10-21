@@ -316,20 +316,18 @@ function cmdHasNegoDetail() {
 function cmdShowContactForm() {
   var w = document.getElementById('cmd-contact-wrap');
   if (w) w.style.display = 'block';
-  /* Vendeur sans négociation : on cache Prix et Tout, et on affiche le message prix fixe */
+  /* Vendeur sans négociation : aucun formulaire, seulement un message poli */
   var nego = cmdHasNegoDetail();
   var noPrice = document.getElementById('cmd-contact-noprice');
+  var body = document.getElementById('cmd-contact-body');
   if (noPrice) noPrice.style.display = nego ? 'none' : 'block';
-  document.querySelectorAll('.cmd-reason-btn').forEach(function(b){
-    var r = b.getAttribute('data-reason');
-    if (r === 'Prix' || r === 'Tout') b.style.display = nego ? 'flex' : 'none';
-  });
+  if (body) body.style.display = nego ? 'block' : 'none';
   ['cmd-qty-box', 'cmd-main-actions'].forEach(function(id){
     var el = document.getElementById(id); if (el) el.style.display = 'none';
   });
   /* la note vocale n'existe que dans ce formulaire de contact */
   var notesBox = document.getElementById('cmd-notes-box');
-  if (notesBox) notesBox.style.display = 'block';
+  if (notesBox) notesBox.style.display = nego ? 'block' : 'none';
   var sheet = document.getElementById('aj-commander-sheet');
   if (sheet) sheet.scrollTop = 0;
 }
@@ -368,11 +366,21 @@ function cmdSetContactChannel(ch) {
 }
 function cmdContactCheck() {
   var phone = (document.getElementById('cmd-contact-phone') || {value:''}).value.trim();
-  var ok = _contactReasons.length > 0 && !!_contactChannel && phone.length >= 8;
+  var phoneOk = phone.replace(/\D/g, '').length >= 9;
+  var missing = [];
+  if (_contactReasons.length === 0) missing.push('سبب التواصل');
+  if (!_contactChannel) missing.push('طريقة التواصل (واتساب ولا الهاتف)');
+  if (!phoneOk) missing.push(phone ? 'رقم هاتف صحيح' : 'رقم الهاتف ديالك');
+  var ok = missing.length === 0;
   var b = document.getElementById('cmd-contact-confirm-btn');
   var h = document.getElementById('cmd-contact-hint');
+  var m = document.getElementById('cmd-contact-missing');
   if (b) b.style.display = ok ? 'flex' : 'none';
   if (h) h.style.display = ok ? 'block' : 'none';
+  if (m) {
+    m.innerHTML = '⚠️ باش نصيفطو الطلب ديالك للبائع، باقي خاصك تكمل:<br>• ' + missing.join('<br>• ');
+    m.style.display = ok ? 'none' : 'block';
+  }
 }
 function cmdResetContact() {
   _contactReasons = [];
@@ -649,7 +657,7 @@ async function cmdToggleRecording() {
       timer.textContent   = '0:00';
       btn.style.background = '#3a3fc9';
       btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>';
-      status.textContent = 'Enregistrement en cours…';
+      status.textContent = 'كيتسجل دابا… اضغط مرة أخرى باش توقف';
       status.style.color = '#4B50E6';
 
       _cmdTimerInterval = setInterval(function(){
@@ -659,7 +667,7 @@ async function cmdToggleRecording() {
       }, 1000);
 
     } catch(err) {
-      document.getElementById('cmd-rec-status').textContent = 'Accès au microphone refusé.';
+      document.getElementById('cmd-rec-status').textContent = 'ما قدرناش نوصلو للميكرو، سمح للمتصفح يستعملو';
     }
   } else {
     cmdStopRecording();
@@ -674,7 +682,7 @@ function cmdStopRecording() {
     var btn = document.getElementById('cmd-rec-btn');
     btn.style.background = '#4B50E6';
     btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>';
-    document.getElementById('cmd-rec-status').textContent = 'Message enregistré ✓';
+    document.getElementById('cmd-rec-status').textContent = 'تسجلات الرسالة ✓';
     document.getElementById('cmd-rec-status').style.color = '#2a7a4b';
     document.getElementById('cmd-rec-timer').style.display = 'none';
   }
@@ -684,7 +692,7 @@ function cmdDiscardRecording() {
   _cmdAudioBlob = null;
   document.getElementById('cmd-audio-player').src = '';
   document.getElementById('cmd-audio-preview').style.display = 'none';
-  document.getElementById('cmd-rec-status').textContent = 'Appuyez pour laisser un message vocal au vendeur';
+  document.getElementById('cmd-rec-status').textContent = 'اضغط على الميكرو باش تسجل رسالتك';
   document.getElementById('cmd-rec-status').style.color = '#8a8480';
   document.getElementById('cmd-rec-timer').style.display = 'none';
   document.getElementById('cmd-rec-timer').textContent = '0:00';
