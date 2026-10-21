@@ -141,10 +141,10 @@ function cmdApplyMode() {
       if ((parseInt(qty.value)||0) < (_offer.moq||1)) qty.value = _offer.moq || 1;
     }
     if (moqHint) moqHint.textContent = (_offer.moq > 1) ? '⚠️ Commande minimum : ' + _offer.moq : '';
-    if (negoWrap) negoWrap.style.display = (_offer.nego > 0) ? 'block' : 'none';
+    cmdResetNego();
     cmdResetContact();
   } else {
-    if (qty) { qty.min = 1; qty.value = Math.max(1, parseInt(qty.value) || 1); }
+    if (qty) { qty.min = 1; if ((parseInt(qty.value) || 0) < 1) qty.value = 1; }
     if (moqHint) moqHint.textContent = '';
     if (negoWrap) negoWrap.style.display = 'none';
     cmdResetNego();
@@ -154,6 +154,11 @@ function cmdApplyMode() {
 }
 function cmdSetMode(mode) {
   _orderMode = mode;
+  /* Changement d'onglet : quantité et variantes repartent de zéro
+     (détail = 1, gros = minimum de commande) */
+  var _q = document.getElementById('cmd-qty');
+  if (_q) _q.value = (mode === 'gros') ? (_offer.moq || 1) : 1;
+  cmdBuildVariations();
   var g = document.getElementById('cmd-tab-gros');
   var d = document.getElementById('cmd-tab-detail');
   if (g) {
@@ -227,6 +232,10 @@ function cmdSyncVarTotal() {
 // ─── NEGOTIATION ───────────────────────────────────────────────
 var _negoChannel = null;
 function cmdShowNegoForm() {
+  var _wrap = document.getElementById('cmd-nego-wrap');
+  if (_wrap) _wrap.style.display = 'block';
+  var _acts = document.getElementById('cmd-main-actions');
+  if (_acts) _acts.style.display = 'none';
   document.getElementById('cmd-nego-form').style.display = 'block';
   document.getElementById('cmd-nego-btn').style.display = 'none';
   document.getElementById('cmd-nego-close').style.display = 'block';
@@ -281,7 +290,9 @@ function cmdResetNego() {
   var f = document.getElementById('cmd-nego-form');
   if (!f) return;
   f.style.display = 'none';
-  document.getElementById('cmd-nego-btn').style.display = 'inline-block';
+  var _wrap = document.getElementById('cmd-nego-wrap');
+  if (_wrap) _wrap.style.display = 'none';
+  document.getElementById('cmd-nego-btn').style.display = 'none';
   document.getElementById('cmd-nego-close').style.display = 'none';
   document.getElementById('cmd-nego-phone').value = '';
   document.getElementById('cmd-nego-qty').value = '';
@@ -298,6 +309,11 @@ function cmdResetNego() {
   if (notesBox) notesBox.style.display = 'none';
   var confirmBtn = document.getElementById('cmd-confirm-btn');
   if (confirmBtn) confirmBtn.style.display = 'flex';
+  var _acts = document.getElementById('cmd-main-actions');
+  if (_acts) _acts.style.display = 'flex';
+  /* Bouton « Négocier » à côté de « Confirmer » : mode gros + négociation acceptée */
+  var openBtn = document.getElementById('cmd-nego-open-btn');
+  if (openBtn) openBtn.style.display = (_orderMode === 'gros' && _offer.nego > 0) ? 'flex' : 'none';
 }
 
 // ─── RETAIL CONTACT (Nego Détail) ──────────────────────────────
@@ -570,6 +586,8 @@ function cmdConfirmOrder() {
     if (_contactBtn) _contactBtn.style.display = 'none';
     var _contactOpenBtn = document.getElementById('cmd-contact-btn');
     if (_contactOpenBtn) _contactOpenBtn.style.display = 'none';
+    var _negoOpenBtn = document.getElementById('cmd-nego-open-btn');
+    if (_negoOpenBtn) _negoOpenBtn.style.display = 'none';
     var _negoHint = document.getElementById('cmd-nego-hint');
     if (_negoHint) _negoHint.style.display = 'none';
     var _contactHint = document.getElementById('cmd-contact-hint');
