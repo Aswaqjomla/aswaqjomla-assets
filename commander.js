@@ -305,7 +305,10 @@ function cmdResetNego() {
 // visible uniquement en mode détail quand Nego Détail est activé.
 var _contactReasons = [];
 var _contactChannel = null;
-var CONTACT_ALL = ['Prix', 'Infos', 'Livraison'];
+/* Prix et « Tout » n'existent que si le vendeur accepte de négocier (Nego Détail) */
+function cmdContactAll() {
+  return cmdHasNegoDetail() ? ['Prix', 'Infos', 'Livraison'] : ['Infos', 'Livraison'];
+}
 function cmdHasNegoDetail() {
   var f = document.getElementById('aj-nego-detail-flag');
   return !!f && f.className.indexOf('w-condition-invisible') === -1;
@@ -313,6 +316,14 @@ function cmdHasNegoDetail() {
 function cmdShowContactForm() {
   var w = document.getElementById('cmd-contact-wrap');
   if (w) w.style.display = 'block';
+  /* Vendeur sans négociation : on cache Prix et Tout, et on affiche le message prix fixe */
+  var nego = cmdHasNegoDetail();
+  var noPrice = document.getElementById('cmd-contact-noprice');
+  if (noPrice) noPrice.style.display = nego ? 'none' : 'block';
+  document.querySelectorAll('.cmd-reason-btn').forEach(function(b){
+    var r = b.getAttribute('data-reason');
+    if (r === 'Prix' || r === 'Tout') b.style.display = nego ? 'flex' : 'none';
+  });
   ['cmd-qty-box', 'cmd-main-actions'].forEach(function(id){
     var el = document.getElementById(id); if (el) el.style.display = 'none';
   });
@@ -332,14 +343,17 @@ function cmdPaintReasons() {
 function cmdToggleReason(el) {
   var r = el.getAttribute('data-reason');
   var all = _contactReasons.indexOf('Tout') !== -1;
+  var allList = cmdContactAll();
+  var nego = cmdHasNegoDetail();
   if (r === 'Tout') {
     _contactReasons = all ? [] : ['Tout'];
   } else if (all) {
-    _contactReasons = CONTACT_ALL.filter(function(x){ return x !== r; });
+    _contactReasons = allList.filter(function(x){ return x !== r; });
   } else {
     var i = _contactReasons.indexOf(r);
     if (i !== -1) _contactReasons.splice(i, 1); else _contactReasons.push(r);
-    if (_contactReasons.length === CONTACT_ALL.length) _contactReasons = ['Tout'];
+    /* « Tout » automatique seulement quand Prix fait partie des choix */
+    if (nego && _contactReasons.length === allList.length) _contactReasons = ['Tout'];
   }
   cmdPaintReasons();
   cmdContactCheck();
@@ -385,7 +399,7 @@ function cmdResetContact() {
   var confirmBtn = document.getElementById('cmd-confirm-btn');
   if (confirmBtn) confirmBtn.style.display = 'flex';
   var contactBtn = document.getElementById('cmd-contact-btn');
-  if (contactBtn) contactBtn.style.display = (_orderMode === 'detail' && cmdHasNegoDetail()) ? 'flex' : 'none';
+  if (contactBtn) contactBtn.style.display = (_orderMode === 'detail') ? 'flex' : 'none';
 }
 var _contactPhoneEl = document.getElementById('cmd-contact-phone');
 if (_contactPhoneEl) _contactPhoneEl.addEventListener('input', cmdContactCheck);
