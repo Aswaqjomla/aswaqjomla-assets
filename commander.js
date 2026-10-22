@@ -290,8 +290,10 @@ function cmdResetNego() {
   var f = document.getElementById('cmd-nego-form');
   if (!f) return;
   f.style.display = 'none';
+  /* La boîte verte reste visible en mode gros (message seulement),
+     le bouton « Négocier » est maintenant à côté de « Confirmer » */
   var _wrap = document.getElementById('cmd-nego-wrap');
-  if (_wrap) _wrap.style.display = 'none';
+  if (_wrap) _wrap.style.display = (_orderMode === 'gros' && _offer.nego > 0) ? 'block' : 'none';
   document.getElementById('cmd-nego-btn').style.display = 'none';
   document.getElementById('cmd-nego-close').style.display = 'none';
   document.getElementById('cmd-nego-phone').value = '';
